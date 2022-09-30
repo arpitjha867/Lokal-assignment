@@ -39,7 +39,7 @@ export default function News(props) {
         fetchData();
     }, []);
 
-
+    console.log('test')
     async function handleNextClick(){
         window.scroll({
             top: 0, 
