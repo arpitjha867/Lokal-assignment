@@ -1,13 +1,12 @@
+// Working on search feature
 import React, { Component } from 'react'
 import NewsItem from './NewsItem';
 import Spinner from './Spinner';
 
-export default class NewsClassComponent extends Component {
+export default class SearchComponent extends Component {
 
     static defaultProps={
         pageSize:10,
-        category:'general'
-
     }
     capitalizeFirstLetter=(string) =>{
         return string.charAt(0).toUpperCase() + string.slice(1);
@@ -20,12 +19,12 @@ export default class NewsClassComponent extends Component {
             totalResults:0,
             loading:true
         } 
-        document.title=`NewsApp/${this.capitalizeFirstLetter(this.props.category)}` 
+        document.title=`NewsApp/${this.capitalizeFirstLetter(this.props.searchStr)}` 
     }
     //getting the data for the first time 
     async componentDidMount(){
         console.log("component did mount called")
-        let url=`https://newsapi.org/v2/top-headlines?category=${this.props.category}&country=in&apiKey=ae7e1f77e524418f976a9443e104f9b2&page=${this.state.page}&pageSize=${this.props.pageSize}`
+        let url=`https://newsapi.org/v2/everything?q=${this.props.searchStr}&apiKey=ae7e1f77e524418f976a9443e104f9b2&page=${this.state.page}&pageSize=${this.props.pageSize}`
         let data = await fetch(url)
         let parsedData= await data.json()
         this.setState({articles:parsedData.articles , totalResults:parsedData.totalResults,loading:false})
@@ -42,7 +41,7 @@ export default class NewsClassComponent extends Component {
            });
         this.setState({loading:true})
         if(!(this.state.page + 1> Math.ceil(this.state.totalResults/this.props.pageSize))){
-        let url=`https://newsapi.org/v2/top-headlines?category=${this.props.category}&country=in&apiKey=ae7e1f77e524418f976a9443e104f9b2&page=${this.state.page + 1}&pageSize=${this.props.pageSize}`
+        let url=`https://newsapi.org/v2/everything?q=${this.props.searchStr}&apiKey=ae7e1f77e524418f976a9443e104f9b2&page=${this.state.page + 1}&pageSize=${this.props.pageSize}`
         let data = await fetch(url)
         let parsedData= await data.json()
         this.setState({
@@ -61,7 +60,7 @@ export default class NewsClassComponent extends Component {
             behavior: 'smooth' 
            });
         this.setState({loading:true})
-        let url=`https://newsapi.org/v2/top-headlines?category=${this.props.category}&country=in&apiKey=ae7e1f77e524418f976a9443e104f9b2&page=${this.state.page - 1}&pageSize=${this.props.pageSize}`
+        let url=`https://newsapi.org/v2/everything?q=${this.props.searchStr}&apiKey=ae7e1f77e524418f976a9443e104f9b2&page=${this.state.page - 1}&pageSize=${this.props.pageSize}`
         let data = await fetch(url)
         let parsedData= await data.json()
         this.setState({
@@ -70,14 +69,12 @@ export default class NewsClassComponent extends Component {
             loading:false
         })
     }
-
-
  
     render() {
         return (
             <div>
                 <div className="container my-3">
-                            <h2 className='text-center text-light'>NewsApp Top  {this.props.category}  headlines </h2>
+                            <h2 className='text-center text-light'>NewsApp On {this.props.searchStr} </h2>
                             <hr />
                             {this.state.loading && <Spinner/>}
                             <div className="row">
@@ -102,3 +99,4 @@ export default class NewsClassComponent extends Component {
         )
     }
 }
+                                                
