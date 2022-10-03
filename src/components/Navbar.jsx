@@ -1,10 +1,16 @@
-import React, { useState } from 'react'
-import {Link} from 'react-router-dom'
+import React, {useState} from 'react'
+import {Link, useNavigate} from 'react-router-dom'
 export default function Navbar(props) {
-    const {handleSearchButton} = props
+    const {getPath} = props
     const [str , setStr] =useState("")
     function handleChange(event){
-        setStr(event.target.value)   
+        setStr(event.target.value)
+        getPath(event.target.value)   
+    }
+    let navigate = useNavigate()
+    function routeChange(){
+        let path = `/${str}`
+        navigate(path)
     }
   return (
     <div>
@@ -44,7 +50,7 @@ export default function Navbar(props) {
             </ul>
             <form className="d-flex">
                 <input id='strInput'  className="form-control me-2 " type="text" placeholder="Search" aria-label="Search" onChange={handleChange} />
-                <button value={str} className="btn btn-outline-success" type="button" onClick={handleSearchButton}>Search</button>
+                <button value={str} className="btn btn-outline-success" type="button" onClick={routeChange}>Search</button>
             </form>
             </div>
         </div>
